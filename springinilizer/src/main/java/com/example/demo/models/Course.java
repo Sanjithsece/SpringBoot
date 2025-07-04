@@ -1,9 +1,14 @@
 package com.example.demo.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Course {
 
     private int course_id;
     private String course_name;
+    @Getter
+    @Setter
     private String duration;
 
     public Course(int course_id, String course_name, String duration) {
@@ -20,9 +25,6 @@ public class Course {
         return course_name;
     }
 
-    public String getDuration() {
-        return duration;
-    }
     public void setCourseId(int course_id) {
         this.course_id = course_id;
     }
@@ -30,8 +32,8 @@ public class Course {
     public void setCourseName(String course_name) {
         this.course_name = course_name;
     }
-
-    public void setDuration(String duration) {
+    public void setCourseDuration(String duration){
         this.duration = duration;
     }
+
 }

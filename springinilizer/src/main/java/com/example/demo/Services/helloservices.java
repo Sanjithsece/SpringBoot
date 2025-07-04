@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class helloservices {
@@ -20,20 +20,31 @@ public class helloservices {
     }
 
     public String addCourse(Course course) {
+        for (Course c : courseList) {
+            if (c.getCourseName().equals(course.getCourseName())) {
+                return "Course already exists: " + course.getCourseName();
+            }
+        }
         courseList.add(course);
         return "Course added: " + course.getCourseName();
     }
-
-    public String deleteCourseById(int id) {
-        Optional<Course> courseToDelete = courseList.stream()
-                .filter(course -> course.getCourseId() == id)
-                .findFirst();
-
-        if (courseToDelete.isPresent()) {
-            courseList.remove(courseToDelete.get());
-            return "Course with ID " + id + " deleted successfully.";
-        } else {
-            return "Course with ID " + id + " not found.";
+    public String putCourse(int id, String newCourseName, String duration) {
+        for (Course course : courseList) {
+            if (course.getCourseId() == id) {
+                course.setCourseName(newCourseName);
+                course.setDuration(duration);
+                return "Course updated: " + course.getCourseName();
+            }
         }
+        return "Course not found with ID: " + id;
+    }
+    public String deleteCourseById(int id) {
+        for (int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getCourseId() == id) {
+                courseList.remove(i);
+                return id + " deleted successfully.";
+            }
+        }
+        return id + " not found.";
     }
 }

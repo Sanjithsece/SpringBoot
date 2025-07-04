@@ -19,13 +19,17 @@ public class Hello {
         return hws.getAllCourses();
     }
 
-    // ✅ Add Course
+
     @PostMapping("/add")
     public String addCourse(@RequestBody Course course) {
         return hws.addCourse(course);
     }
 
-    // ✅ Delete Course by ID
+    @PutMapping("/{id}")
+    public String putCourse(@PathVariable int id, @RequestBody Course course) {
+        return hws.putCourse(id, course.getCourseName(), course.getDuration());
+    }
+
     @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable int id) {
         return hws.deleteCourseById(id);
