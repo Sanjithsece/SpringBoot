@@ -1,15 +1,14 @@
-package com.example.demo;
+package com.example.studentspring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class
+StudentspringApplication {
 
 	public static void main(String[] args) {
-
-        // Task for the Course Management
-		SpringApplication.run(DemoApplication.class, args);
-
+		SpringApplication.run(StudentspringApplication.class, args);
 	}
+
 }

@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.example.StudentProject.Models;
 
 public class Student {
     private int rollNo;
@@ -6,8 +6,7 @@ public class Student {
     private String studentClass;
     private int mark;
 
-    public Student() {
-    }
+    public Student() {}
 
     public Student(int rollNo, String name, String studentClass, int mark) {
         this.rollNo = rollNo;
