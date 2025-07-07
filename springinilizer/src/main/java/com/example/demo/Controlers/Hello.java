@@ -1,7 +1,7 @@
-package com.example.demo.Controlers;
+package com.example.demo.controllers;
 
 import com.example.demo.models.Course;
-import com.example.demo.Services.helloservices;
+import com.example.demo.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,53 +12,30 @@ import java.util.List;
 public class Hello {
 
     @Autowired
-    private helloservices hws;
-
-    @GetMapping("/all")
-    public List<Course> getAllCourses() {
-        return hws.getAllCourses();
-    }
-
+    private CourseService service;
 
     @PostMapping("/add")
     public String addCourse(@RequestBody Course course) {
-        return hws.addCourse(course);
+        return service.addCourse(course);
     }
 
-    @PutMapping("/{id}")
-    public String putCourse(@PathVariable int id, @RequestBody Course course) {
-        return hws.putCourse(id, course.getCourseName(), course.getDuration());
+    @GetMapping("/all")
+    public List<Course> getAll() {
+        return service.getAllCourses();
+    }
+
+    @GetMapping("/{id}")
+    public Course getById(@PathVariable Integer id) {
+        return service.getCourseById(id);
+    }
+
+    @PutMapping("/update")
+    public String updateCourse(@RequestBody Course course) {
+        return service.updateCourse(course);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteCourse(@PathVariable int id) {
-        return hws.deleteCourseById(id);
+    public String delete(@PathVariable Integer id) {
+        return service.deleteCourseById(id);
     }
 }
-
-
-//    @PostMapping("/in")
-//    public String sanjith(@RequestBody RequestName request) {
-//        System.out.println("hi " + request.getName());
-//        return "Received: " + request.getName();
-//    }
-
-//@PostMapping("/in")
-//public String sanjith(@RequestBody  String request) {
-//    System.out.println("hi " + request);
-//    return "Received: " + request;
-//}
-//}
-
-
-//class RequestName {
-//    private String name;
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//}
