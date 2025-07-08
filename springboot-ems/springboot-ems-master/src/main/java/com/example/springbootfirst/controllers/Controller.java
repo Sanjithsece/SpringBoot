@@ -25,15 +25,16 @@ public class Controller {
         return hws.getEmployeeById(empID);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public String postMethod(@RequestBody Employee employee){
-//        Employee employee = new Employee(5,"Sivagami", "Business");
         return hws.addEmployee(employee);
     }
-    @PutMapping
+
+    @PutMapping("/update")
     public String putMethod(@RequestBody Employee employee){
         return hws.updateEmployee(employee);
     }
+
     @DeleteMapping("/{empID}")
     public String deleteMethod(@PathVariable int empID){
         return hws.deleteEmployeeById(empID);
