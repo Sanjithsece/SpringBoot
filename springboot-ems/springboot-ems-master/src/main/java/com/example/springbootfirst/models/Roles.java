@@ -1,5 +1,4 @@
 package com.example.springbootfirst.models;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,9 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Employee {
+public class Roles {
     @Id
-    private int empID;
-    private String name;
-    private String job;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int roleId;
+    private String roleName;
+
+
 }
