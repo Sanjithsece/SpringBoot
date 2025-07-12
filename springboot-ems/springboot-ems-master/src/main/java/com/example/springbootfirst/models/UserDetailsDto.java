@@ -3,6 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 @Data
 @NoArgsConstructor
@@ -13,5 +14,7 @@ public class UserDetailsDto {
     private String email;
     private String password;
     private String userName;
-    private Set<String> roleNames;
+    private Set<String> rolenames;
+    private List<String> workDescriptions;
+
 }

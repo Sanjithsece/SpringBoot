@@ -30,10 +30,7 @@
             return authService.updateRegisterById(id, updatedDetails);
         }
 
-        @GetMapping("/role/{roleName}")
-        public List<RegisterDetails> getUsersByRole(@PathVariable String roleName) {
-            return authService.getUsersByRole(roleName);
-        }
+
 
 
     }

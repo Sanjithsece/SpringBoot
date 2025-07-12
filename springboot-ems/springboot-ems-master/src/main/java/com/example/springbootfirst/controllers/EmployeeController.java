@@ -14,6 +14,7 @@ public class EmployeeController {
     @Autowired
     private AuthService aus;
 
+
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/employee")
     public List<RegisterDetails> getMethod() {
@@ -44,6 +45,23 @@ public class EmployeeController {
         return aus.deleteRegisterById(empID);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @GetMapping("/employee/role/{roleName}")
+    public List<RegisterDetails> getUsersByRole(@PathVariable String roleName) {
+        return aus.getUsersByRole(roleName);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PutMapping("/employee/assign-work/{empId}")
+    public String assignWorkToEmployee(@PathVariable int empId, @RequestBody List<String> workDescriptions) {
+        return aus.assignWorkToEmployee(empId, workDescriptions);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PutMapping("/employee/edit-work/{empId}")
+    public String updateWorkEmployee(@PathVariable int empId, @RequestBody List<String> workDescriptions) {
+        return aus.updateWorkEmployee(empId, workDescriptions);
+    }
 
 //    @PreAuthorize("hasAnyRole('ADMIN','USER')")
 //    @GetMapping("/")

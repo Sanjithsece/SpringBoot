@@ -3,8 +3,10 @@ package com.example.springbootfirst.services;
 import com.example.springbootfirst.models.RegisterDetails;
 import com.example.springbootfirst.models.Roles;
 import com.example.springbootfirst.models.UserDetailsDto;
+import com.example.springbootfirst.models.Work;
 import com.example.springbootfirst.repository.RegisterDetailsRepositary;
 import com.example.springbootfirst.repository.RolesRepository;
+import com.example.springbootfirst.repository.WorkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,27 +28,75 @@ public class AuthService {
     @Autowired
     private RolesRepository rolesRepository;
 
+    @Autowired
+    private WorkRepository workRepository;
+
     public String addNewEmployee(UserDetailsDto register) {
         RegisterDetails registerDetails = new RegisterDetails();
-       // registerDetails.setEmpID(register.getEmpId());
         registerDetails.setName(register.getName());
         registerDetails.setEmail(register.getEmail());
         registerDetails.setPassword(passwordEncoder.encode(register.getPassword()));
         registerDetails.setUsername(register.getUserName());
+
+
         Set<Roles> roles = new HashSet<>();
-        for (String roleName : register.getRoleNames()) {
-            Roles role = rolesRepository.findByRoleName(roleName).orElseGet(() -> {
-                Roles newRole = new Roles();
-                newRole.setRoleName(roleName);
-                return rolesRepository.save(newRole);
-            });
+        for (String roleName : register.getRolenames()) {
+            Roles role = rolesRepository.findByRoleName(roleName)
+                    .orElseGet(() -> {
+                        Roles newRole = new Roles();
+                        newRole.setRoleName(roleName);
+                        return rolesRepository.save(newRole);
+                    });
             roles.add(role);
         }
         registerDetails.setRoles(roles);
+
+
+        Set<Work> works = new HashSet<>();
+        for (String description : register.getWorkDescriptions()) {
+            Work work = workRepository.findByDescription(description)
+                    .orElseGet(() -> workRepository.save(new Work(0, description)));
+            works.add(work);
+        }
+        registerDetails.setWorks(works);
         registerDetailsRepositary.save(registerDetails);
 
-        return "Employee Added Successfully";
+        return "Employee Added Successfully with Work!";
     }
+    public String assignWorkToEmployee(int empId, List<String> workDescriptions) {
+        RegisterDetails employee = registerDetailsRepositary.findById(empId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        Set<Work> works = new HashSet<>();
+        for (String desc : workDescriptions) {
+            Work work = workRepository.findByDescription(desc)
+                    .orElseGet(() -> workRepository.save(new Work(0, desc)));
+            works.add(work);
+        }
+
+        employee.setWorks(works); // This will replace the old work list
+        registerDetailsRepositary.save(employee);
+
+        return "Work assigned successfully to employee ID: " + empId;
+    }
+    public String updateWorkEmployee(int empId, List<String> workDescriptions) {
+        RegisterDetails employee = registerDetailsRepositary.findById(empId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        Set<Work> updatedWorks = new HashSet<>();
+        for (String desc : workDescriptions) {
+            Work work = workRepository.findByDescription(desc)
+                    .orElseGet(() -> workRepository.save(new Work(0, desc)));
+            updatedWorks.add(work);
+        }
+
+        employee.setWorks(updatedWorks); // Overwrite previous work assignments
+        registerDetailsRepositary.save(employee);
+
+        return "Employee work updated successfully!";
+    }
+
+
 
     public String authenticate(RegisterDetails login) {
         RegisterDetails user = registerDetailsRepositary.findByEmail(login.getEmail());
@@ -59,7 +109,7 @@ public class AuthService {
         }
         return "Login successful username: " + user.getName();
     }
-    // Inside AuthService.java
+
 
     public List<RegisterDetails> getMethod() {
         return registerDetailsRepositary.findAll();
@@ -103,7 +153,6 @@ public class AuthService {
     public List<RegisterDetails> getUsersByRole(String roleName) {
         return registerDetailsRepositary.findByRolesRoleName(roleName);
     }
-
 
 
 }
